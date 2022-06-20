@@ -29,7 +29,7 @@ class Bot {
       inputType: StreamType.Arbitrary
     })
     this.player.play(resourcePassed)
-    return entersState(this.player, AudioPlayerStatus.Playing, 5e4)
+    return entersState(this.player, AudioPlayerStatus.Playing, 10e4)
   }
 
   async connectToChannel(channel) {
