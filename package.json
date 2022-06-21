@@ -20,6 +20,7 @@
   "homepage": "https://github.com/devEdu-web/discord-bot#readme",
   "dependencies": {
     "@discordjs/voice": "^0.10.0",
+    "axios": "^0.27.2",
     "discord.js": "^13.8.0",
     "dotenv": "^16.0.1",
     "libsodium-wrappers": "^0.7.10",

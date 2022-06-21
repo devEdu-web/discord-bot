@@ -3,8 +3,8 @@ class Util {
   sortResources(resourcesArray) {
     return resourcesArray[Math.floor(Math.random() * resourcesArray.length)]
   }
-  genQueryParams(queryObject) {
-    return qs.stringify(queryObject)
+  genQueryParams(query) {
+    return qs.stringify(query)
   }
 }
 
