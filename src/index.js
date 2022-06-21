@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { getVoiceConnection } from '@discordjs/voice';
-import Bot from './Bot.js';
+import Bot from './components/Bot/Bot.js';
 import Commands from './components/Commands/Commands.js'
 
 

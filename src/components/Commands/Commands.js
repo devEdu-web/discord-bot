@@ -1,4 +1,4 @@
-import Bot from "../../Bot.js"
+import Bot from "../Bot/Bot.js"
 import Util from "../../util/Util.js"
 
 const lofiResources = [
