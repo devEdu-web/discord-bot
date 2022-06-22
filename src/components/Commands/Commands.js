@@ -21,6 +21,15 @@ class Commands {
       return error
     }
   }
+  async playSong(channel, songUrl) {
+    try {
+      await Bot.play(songUrl)
+      const connection = await Bot.connectToChannel(channel)
+      await connection.subscribe(Bot.player)
+    } catch(error) {
+      return error
+    }
+  }
 }
 
 export default new Commands()
