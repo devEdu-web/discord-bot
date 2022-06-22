@@ -40,31 +40,10 @@ Bot.client.on('messageCreate', async (message) => {
       }
     } else if(message.content.startsWith('--play')) {
 
-      if(!isUserChoosingSong) {
-        const commandToArray = message.content.split(' ')
-        commandToArray.shift()
-        const query = commandToArray.join(' ')
-        
-        const result = await Youtube.search(query)
-        const resultObj = Util.mapResultArrayToObjects(result.items)
-        const chooseMessage = Util.buildChooseMessage(resultObj)
-        message.reply(chooseMessage)
-        isUserChoosingSong = true
-        currentResult = resultObj
-
-      } else {
-        const choice = message.content.split(' ')[1]
-        const channel = message.member.voice.channel;
-        if(channel) {
-          try {
-            await Commands.playSong(channel, currentResult[choice].videoUrl)
-            message.reply('Playing...')
-          } catch(error) {
-            throw error
-          }
-        }
-
-
+      try {
+        await Commands.playSong(message)
+      } catch(error) {
+        throw error
       }
 
     }
