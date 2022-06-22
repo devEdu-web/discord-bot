@@ -18,4 +18,4 @@ class Youtube {
   }
 }
 
-const yt = new Youtube()
+export default new Youtube()
