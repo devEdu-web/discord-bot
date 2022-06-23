@@ -45,7 +45,7 @@ class Commands {
 
       const choice = message.content.split(' ')[1]
       const channel = message.member.voice.channel;
-      console.log(channel)
+      // console.log(channel)
         if(channel) {
           try {
             await Bot.play(this.currentResult[choice].videoUrl)
