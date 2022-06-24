@@ -28,30 +28,36 @@ class Util {
     return message;
   }
   buildDefinitionsMessage(definitions) {
-    let message = ``
+    let message = ``;
 
-    if(definitions.length > 3) {
-      for(let i = 0; i < 3; i++) {
-        message += `**${definitions[i].meta.id}**\n`
+    if (definitions.length > 3) {
+      for (let i = 0; i < 3; i++) {
+        message += `**${definitions[i].meta.id}**\n`;
         definitions[i].shortdef.forEach((def, index) => {
-          message += `${index + 1}. ${def}\n`
-        })
-  
+          message += `${index + 1}. ${def}\n`;
+        });
       }
-  
-      return message
+
+      return message;
     } else {
       definitions.forEach((def, index) => {
-        message += `**${def.meta.id}**\n`
+        message += `**${def.meta.id}**\n`;
         def.shortdef.forEach((def, index) => {
-          message += `${index + 1}. ${def}\n`
-        })
-  
-      })
-  
-      return message
-    }
+          message += `${index + 1}. ${def}\n`;
+        });
+      });
 
+      return message;
+    }
+  }
+  buildHelpMessage(commandsList) {
+    let message = '**Commands**\n';
+
+    commandsList.forEach((command) => {
+      message += `${command}\n`;
+    });
+
+    return message;
   }
 }
 
