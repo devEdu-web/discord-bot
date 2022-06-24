@@ -1,6 +1,5 @@
 import qs from 'querystring';
 const youtubeVideoUrl = 'https://www.youtube.com/watch?v=';
-import { words } from '../components/Words/wordsList.js';
 class Util {
   sortResources(resourcesArray) {
     return resourcesArray[Math.floor(Math.random() * resourcesArray.length)];
