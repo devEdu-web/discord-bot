@@ -28,9 +28,31 @@ class Util {
 
     return message;
   }
-  randomWord(wordsList) {
-    const random = Math.floor(Math.random() * wordsList.length);
-    return wordsList[random];
+  buildDefinitionsMessage(definitions) {
+    let message = ``
+
+    if(definitions.length > 3) {
+      for(let i = 0; i < 3; i++) {
+        message += `**${definitions[i].meta.id}**\n`
+        definitions[i].shortdef.forEach((def, index) => {
+          message += `${index + 1}. ${def}\n`
+        })
+  
+      }
+  
+      return message
+    } else {
+      definitions.forEach((def, index) => {
+        message += `**${def.meta.id}**\n`
+        def.shortdef.forEach((def, index) => {
+          message += `${index + 1}. ${def}\n`
+        })
+  
+      })
+  
+      return message
+    }
+
   }
 }
 

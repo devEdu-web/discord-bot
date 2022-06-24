@@ -1,6 +1,8 @@
 import Bot from "../Bot/Bot.js"
 import Util from "../../util/Util.js"
 import Youtube from "../../services/youtube/Youtube.js"
+import Merriam from "../../services/merriam/Merriam.js"
+import { words } from "../Words/wordsList.js"
 
 const lofiResources = [
   'https://www.youtube.com/watch?v=VTSIrwHUZ-M&list=PLHqFOoNjBw8o8caNZHl6gOSzqXi2dggWn&index=9&t=2260s&ab_channel=Mr_MoMoMusic',
@@ -60,12 +62,20 @@ class Commands {
         }
       this.isUserChoosingSong = false
     }
-
-
+  }
+  async define(message) {
+    const commandToArray = message.content.split(' ')
+    commandToArray.shift()
+    const word = commandToArray.join(' ')
     
-
-
-    
+    try {
+      const response = await Merriam.getWord(word)
+      const reply = Util.buildDefinitionsMessage(response)
+      message.reply(reply)
+    } catch(error) {
+      console.log(error)
+      throw error
+    }
   }
 }
 

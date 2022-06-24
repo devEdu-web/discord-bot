@@ -46,6 +46,12 @@ Bot.client.on('messageCreate', async (message) => {
         throw error
       }
 
+    } else if(message.content.startsWith('--define')) {
+      try {
+        await Commands.define(message)
+      } catch(error) {
+        message.reply(error.message)
+      }
     }
   }
 });

@@ -11,10 +11,18 @@ const baseUrl = 'https://www.dictionaryapi.com/api/v3/references/learners/json'
 
 class Merriam {
   async getWord(word) {
-    const fullUrl = `${baseUrl}/${word}?key=${process.env.MERRIAM_LEARNER_API_KEY}`
-    const response = await axios.get(fullUrl)
-    console.log(response.data)
-    return response.data
+    try {
+      const fullUrl = `${baseUrl}/${word}?key=${process.env.MERRIAM_LEARNER_API_KEY}`
+      const response = await axios.get(fullUrl)
+      if(response.data.length == 0) {
+        throw new Error('Word not found.')
+      } else {
+
+        return response.data
+      }
+    } catch(error) {
+      throw error
+    }
   }
 }
 
