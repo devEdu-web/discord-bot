@@ -13,17 +13,21 @@ const lofiResources = [
   'https://www.youtube.com/watch?v=lTRiuFIWV54&list=PLHqFOoNjBw8o8caNZHl6gOSzqXi2dggWn&index=4&ab_channel=LofiGirl',
   'https://www.youtube.com/watch?v=zFhfksjf_mY&list=PLHqFOoNjBw8o8caNZHl6gOSzqXi2dggWn&index=2&ab_channel=LofiGirl',
 ];
-class Commands {
+
+const queue = [];
+
+class Commands extends Bot {
   constructor() {
+    super()
     this.currentResult = undefined;
     this.isUserChoosingSong = false;
   }
   async lofime(channel) {
     try {
       const lofiResource = Util.sortResources(lofiResources);
-      await Bot.play(lofiResource);
-      const connection = await Bot.connectToChannel(channel);
-      await connection.subscribe(Bot.player);
+      await this.play(lofiResource);
+      const connection = await this.connectToChannel(channel);
+      await connection.subscribe(this.player);
     } catch (error) {
       return error;
     }
@@ -46,10 +50,39 @@ class Commands {
       // console.log(channel)
       if (channel) {
         try {
-          await Bot.play(this.currentResult[choice].videoUrl);
-          const connection = await Bot.connectToChannel(channel);
-          await connection.subscribe(Bot.player);
-          message.reply('Playing...');
+
+          this.player.setMaxListeners(1)
+          this.player.removeAllListeners()
+          console.log(this.currentResult[choice])
+
+          if(this.player.state.status !== 'playing') {
+            await this.play(this.currentResult[choice].videoUrl);
+            const connection = await this.connectToChannel(channel);
+            await connection.subscribe(this.player);
+            message.reply(`Playing ${this.currentResult[choice].title}`);
+          } else {
+            message.reply(`Queueing ${this.currentResult[choice].title}`)
+            queue.push(this.currentResult[choice])
+          }
+
+          
+          this.player.addListener('stateChange', async (oldState, newState) => {
+            if(newState.status == 'idle') {
+              console.log('song is over')
+              if(queue.length > 0) {
+                await this.play(queue[0].videoUrl);
+                const connection = await this.connectToChannel(channel);
+                await connection.subscribe(this.player);
+                message.reply(`Playing ${queue[0].title}`);
+                queue.shift()
+              } else {
+                message.reply('Queue is over.');
+              }
+            }
+          })
+
+          
+
         } catch (error) {
           return error;
         }
@@ -59,6 +92,7 @@ class Commands {
       this.isUserChoosingSong = false;
     }
   }
+
   async define(message) {
     const commandToArray = message.content.split(' ');
     commandToArray.shift();

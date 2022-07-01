@@ -6,15 +6,17 @@ import Bot from './components/Bot/Bot.js';
 import Commands from './components/Commands/Commands.js';
 import Youtube from './services/youtube/Youtube.js';
 import Util from './util/Util.js';
+// import Bot from './components/Bot/Bot.js';
 
+const astraBot = new Bot()
 let isUserChoosingSong = false;
 let currentResult;
 
-Bot.client.on('ready', () => {
+astraBot.client.on('ready', () => {
   console.log('Bot is ready sir.');
 });
 
-Bot.client.on('messageCreate', async (message) => {
+astraBot.client.on('messageCreate', async (message) => {
   if (!message.author.bot) {
     if (message.content.startsWith('--lofime')) {
       const channel = message.member.voice.channel;
@@ -50,8 +52,15 @@ Bot.client.on('messageCreate', async (message) => {
       }
     } else if (message.content.startsWith('--help')) {
       Commands.help(message);
+    } else if(message.content.startsWith('--queue')) {
+      await Commands.queueSong(message)
     }
   }
 });
 
-Bot.client.login(process.env.DS_TOKEN);
+astraBot.client.login(process.env.DS_TOKEN);
+
+// TODO: Check if the args are passed to each command and throw an error otherwise.
+// TODO: Make a queue
+// TODO: Make sure that each server has its own queue -> avoid shared queues
+// TODO: Download current song into a file, and stream it from there. - Might have performance issues, since it needs to download the song before playing, but if we download only the audio, it wouldn't affect much the performance.

@@ -12,9 +12,14 @@ const baseUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=
 
 class Youtube {
   async search(query) {
-    const q = Util.genQueryParams({ q: query });
-    const response = await axios.get(`${baseUrl}${q}`);
-    return response.data;
+    try {
+      const q = Util.genQueryParams({ q: query });
+      const response = await axios.get(`${baseUrl}${q}`);
+      return response.data;
+    } catch(error) {
+      console.log(error)
+      return error
+    }
   }
 }
 

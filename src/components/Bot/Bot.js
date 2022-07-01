@@ -21,6 +21,10 @@ class Bot {
       ],
     });
     this.player = createAudioPlayer();
+    this.playerInfo = {
+      isPlaying: false,
+      currentSong: null,
+    };
   }
 
   play(resource) {
@@ -29,6 +33,7 @@ class Bot {
       inputType: StreamType.Arbitrary,
     });
     this.player.play(resourcePassed);
+    this.playerInfo.isPlaying = true;
     return entersState(this.player, AudioPlayerStatus.Playing, 10e4);
   }
 
@@ -38,7 +43,6 @@ class Bot {
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator,
     });
-
     try {
       entersState(connection, VoiceConnectionStatus.Ready, 30e5);
       return connection;
@@ -49,4 +53,4 @@ class Bot {
   }
 }
 
-export default new Bot();
+export default Bot;
