@@ -34,16 +34,14 @@ class Commands extends Bot {
   }
   async playSong(message) {
     if (!this.isUserChoosingSong) {
-      const commandToArray = message.content.split(' ');
-      commandToArray.shift();
-      const query = commandToArray.join(' ');
+
+      const query = Util.getYoutubeSearchQuery(message);
 
       const result = await Youtube.search(query);
-      const resultObj = Util.mapResultArrayToObjects(result.items);
-      const chooseMessage = Util.buildChooseMessage(resultObj);
-      message.reply(chooseMessage);
+      const chooseMessage = Util.buildChooseMessage(result);
+      message.reply(chooseMessage.message);
       this.isUserChoosingSong = true;
-      this.currentResult = resultObj;
+      this.currentResult = chooseMessage.resultParsed;
     } else {
       const choice = message.content.split(' ')[1];
       const channel = message.member.voice.channel;

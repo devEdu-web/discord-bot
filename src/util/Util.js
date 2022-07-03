@@ -7,9 +7,9 @@ class Util {
   genQueryParams(query) {
     return qs.stringify(query);
   }
-  mapResultArrayToObjects(resultArray) {
+  mapResultArrayToObjects(youtubeSearchResult) {
     const result = {};
-    resultArray.forEach((item, index) => {
+    youtubeSearchResult.forEach((item, index) => {
       result[index + 1] = {
         videoId: item.id.videoId,
         title: item.snippet.title,
@@ -18,14 +18,18 @@ class Util {
     });
     return result;
   }
-  buildChooseMessage(resultObj) {
+  buildChooseMessage(youtubeSearchResult) {
+    const resultParsed = this.mapResultArrayToObjects(youtubeSearchResult.items)
     let message = ``;
 
-    for (let [key, value] of Object.entries(resultObj)) {
+    for (let [key, value] of Object.entries(resultParsed)) {
       message += `${key} - ${value.title} \n`;
     }
 
-    return message;
+    return {
+      message,
+      resultParsed
+    };
   }
   buildDefinitionsMessage(definitions) {
     let message = ``;
@@ -58,6 +62,14 @@ class Util {
     });
 
     return message;
+  }
+  getYoutubeSearchQuery(message) {
+    const commandToArray = message.content.split(' ');
+    commandToArray.shift();
+    const query = commandToArray.join(' ');
+
+    return query
+
   }
 }
 
