@@ -22,12 +22,10 @@ class Commands extends Bot {
     this.currentResult = undefined;
     this.isUserChoosingSong = false;
   }
-  async lofime(channel) {
+  async lofime(voiceChannel) {
     try {
       const lofiResource = Util.sortResources(lofiResources);
-      await this.play(lofiResource);
-      const connection = await this.connectToChannel(channel);
-      await connection.subscribe(this.player);
+      await this.play(lofiResource, voiceChannel);
     } catch (error) {
       return error;
     }
@@ -37,26 +35,22 @@ class Commands extends Bot {
 
       const query = Util.getYoutubeSearchQuery(message);
 
-      const result = await Youtube.search(query);
-      const chooseMessage = Util.buildChooseMessage(result);
+      const youtubeSearchResult = await Youtube.search(query);
+      const chooseMessage = Util.buildChooseMessage(youtubeSearchResult);
       message.reply(chooseMessage.message);
       this.isUserChoosingSong = true;
       this.currentResult = chooseMessage.resultParsed;
     } else {
       const choice = message.content.split(' ')[1];
       const channel = message.member.voice.channel;
-      // console.log(channel)
       if (channel) {
         try {
 
           this.player.setMaxListeners(1)
           this.player.removeAllListeners()
-          // console.log(this.currentResult[choice])
 
           if(this.player.state.status !== 'playing') {
-            await this.play(this.currentResult[choice].videoUrl);
-            const connection = await this.connectToChannel(channel);
-            await connection.subscribe(this.player);
+            await this.play(this.currentResult[choice].videoUrl, channel);
             message.reply(`Playing ${this.currentResult[choice].title}`);
           } else {
             message.reply(`Queueing ${this.currentResult[choice].title}`)
@@ -66,11 +60,8 @@ class Commands extends Bot {
           
           this.player.addListener('stateChange', async (oldState, newState) => {
             if(newState.status == 'idle') {
-              console.log('song is over')
               if(queue.length > 0) {
-                await this.play(queue[0].videoUrl);
-                const connection = await this.connectToChannel(channel);
-                await connection.subscribe(this.player);
+                await this.play(queue[0].videoUrl, channel);
                 message.reply(`Playing ${queue[0].title}`);
                 queue.shift()
               } else {
@@ -96,9 +87,7 @@ class Commands extends Bot {
     }
 
     try {
-      await this.play(queue[0].videoUrl);
-      const connection = await this.connectToChannel(channel);
-      await connection.subscribe(this.player);
+      await this.play(queue[0].videoUrl, channel);
       message.reply(`Playing ${queue[0].title}`);
       queue.shift()
       console.log(queue)

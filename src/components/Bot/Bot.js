@@ -21,27 +21,32 @@ class Bot {
       ],
     });
     this.player = createAudioPlayer();
-    this.playerInfo = {
-      isPlaying: false,
-      currentSong: null,
-    };
   }
 
-  play(resource) {
+  async play(resource, voiceChannel) {
+    try {
+      this.prepareSong(resource);
+      const connection = await this.connectToChannel(voiceChannel);
+      await connection.subscribe(this.player);
+    } catch(error) {
+      return error
+    }
+  }
+
+  prepareSong(resource) {
     const stream = ytdl(resource, { filter: 'audioonly' });
     const resourcePassed = createAudioResource(stream, {
       inputType: StreamType.Arbitrary,
     });
     this.player.play(resourcePassed);
-    this.playerInfo.isPlaying = true;
     return entersState(this.player, AudioPlayerStatus.Playing, 10e4);
   }
 
-  async connectToChannel(channel) {
+  async connectToChannel(voiceChannel) {
     const connection = joinVoiceChannel({
-      channelId: channel.id,
-      guildId: channel.guild.id,
-      adapterCreator: channel.guild.voiceAdapterCreator,
+      channelId: voiceChannel.id,
+      guildId: voiceChannel.guild.id,
+      adapterCreator: voiceChannel.guild.voiceAdapterCreator,
     });
     try {
       entersState(connection, VoiceConnectionStatus.Ready, 30e5);
