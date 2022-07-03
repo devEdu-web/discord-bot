@@ -53,7 +53,7 @@ class Commands extends Bot {
 
           this.player.setMaxListeners(1)
           this.player.removeAllListeners()
-          console.log(this.currentResult[choice])
+          // console.log(this.currentResult[choice])
 
           if(this.player.state.status !== 'playing') {
             await this.play(this.currentResult[choice].videoUrl);
@@ -79,9 +79,7 @@ class Commands extends Bot {
                 message.reply('Queue is over.');
               }
             }
-          })
-
-          
+          })          
 
         } catch (error) {
           return error;
@@ -91,6 +89,25 @@ class Commands extends Bot {
       }
       this.isUserChoosingSong = false;
     }
+  }
+
+  async skipSong(message) {
+    const channel = message.member.voice.channel;
+    if(queue.length == 0) {
+      return message.reply('No songs on queue.');
+    }
+
+    try {
+      await this.play(queue[0].videoUrl);
+      const connection = await this.connectToChannel(channel);
+      await connection.subscribe(this.player);
+      message.reply(`Playing ${queue[0].title}`);
+      queue.shift()
+      console.log(queue)
+    } catch(error) {
+      console.log(error)
+    }
+
   }
 
   async define(message) {

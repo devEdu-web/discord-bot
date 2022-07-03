@@ -52,8 +52,8 @@ astraBot.client.on('messageCreate', async (message) => {
       }
     } else if (message.content.startsWith('--help')) {
       Commands.help(message);
-    } else if(message.content.startsWith('--queue')) {
-      await Commands.queueSong(message)
+    } else if(message.content.startsWith('--skip')) {
+      Commands.skipSong(message)
     }
   }
 });
