@@ -97,6 +97,20 @@ class Commands extends Bot {
 
   }
 
+  pauseSong(message) {
+    if(this.player.state.status !== 'playing') {
+      return message.reply('No song is playing.')
+    }
+    this.player.pause()
+  }
+
+  resumeSong(message) {
+    if(this.player.state.status !== 'idle') {
+      return message.reply('No song is paused.')
+    }
+    this.player.unpause()
+  }
+
   async define(message) {
     const commandToArray = message.content.split(' ');
     commandToArray.shift();

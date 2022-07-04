@@ -54,6 +54,10 @@ astraBot.client.on('messageCreate', async (message) => {
       Commands.help(message);
     } else if(message.content.startsWith('--skip')) {
       Commands.skipSong(message)
+    } else if (message.content.startsWith('--pause')) {
+      Commands.pauseSong(message);
+    } else if(message.content.startsWith('--resume')) {
+      Commands.resumeSong(message)
     }
   }
 });
