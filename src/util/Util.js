@@ -31,6 +31,22 @@ class Util {
       resultParsed
     };
   }
+  handleUserChoice(choice, message) {
+    const isNumber = Math.abs(choice)
+    const isGreaterThan5 = isNumber > 5 ? true : false;
+
+    if(!isNumber || isGreaterThan5) {
+      return {
+        error: true,
+        message: 'Choice not available. Try again.'
+      }
+    }
+
+    return {
+      error: false
+    }
+
+  }
   buildDefinitionsMessage(definitions) {
     let message = ``;
 
@@ -69,7 +85,6 @@ class Util {
     const query = commandToArray.join(' ');
 
     return query
-
   }
 }
 

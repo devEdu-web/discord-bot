@@ -42,6 +42,12 @@ class Commands extends Bot {
       this.currentResult = chooseMessage.resultParsed;
     } else {
       const choice = message.content.split(' ')[1];
+      const isChoiceValid = Util.handleUserChoice(choice, message)
+      
+      if(isChoiceValid.error) {
+        message.reply(isChoiceValid.message)
+      }
+
       const channel = message.member.voice.channel;
       if (channel) {
         try {
