@@ -111,7 +111,8 @@ class Commands extends Bot {
   }
 
   resumeSong(message) {
-    if(this.player.state.status !== 'idle') {
+    console.log(this.player.state.status)
+    if(this.player.state.status !== 'paused') {
       return message.reply('No song is paused.')
     }
     this.player.unpause()
