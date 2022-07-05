@@ -47,6 +47,5 @@ astraBot.client.on('messageCreate', async (message) => {
 astraBot.client.login(process.env.DS_TOKEN);
 
 // TODO: Check if the args are passed to each command and throw an error otherwise.
-// TODO: Make a queue
-// TODO: Make sure that each server has its own queue -> avoid shared queues
 // TODO: Download current song into a file, and stream it from there. - Might have performance issues, since it needs to download the song before playing, but if we download only the audio, it wouldn't affect much the performance.
+// TODO: Implement a leave command
