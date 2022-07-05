@@ -1,16 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { getVoiceConnection } from '@discordjs/voice';
 import Bot from './components/Bot/Bot.js';
 import Commands from './components/Commands/Commands.js';
-import Youtube from './services/youtube/Youtube.js';
-import Util from './util/Util.js';
-// import Bot from './components/Bot/Bot.js';
+import commandsMap from './components/Commands/commandsMap.js';
 
 const astraBot = new Bot()
-let isUserChoosingSong = false;
-let currentResult;
 
 astraBot.client.on('ready', () => {
   console.log('Bot is ready sir.');
@@ -18,47 +13,34 @@ astraBot.client.on('ready', () => {
 
 astraBot.client.on('messageCreate', async (message) => {
   if (!message.author.bot) {
-    if (message.content.startsWith('--lofime')) {
-      const channel = message.member.voice.channel;
-      if (channel) {
-        try {
-          await Commands.lofime(channel);
-          message.reply('Playing...');
-        } catch (error) {
-          throw error;
-        }
-      } else {
-        message.reply('Join a voice channel and try again.');
-      }
-    } else if (message.content.startsWith('--leave')) {
-      const channel = message.guild.id;
+    const voiceChannel = message.member.voice.channel;
+    const channelToDestroy = message.guild.id
+
+    if(message.content.startsWith('--') && !message.content.startsWith('--play')) {
       try {
-        const connection = getVoiceConnection(channel);
-        connection.destroy();
-      } catch (error) {
-        message.reply('No player found');
+        const command = message.content.split(' ')[0]
+        await commandsMap[command]({
+          message,
+          voiceChannel,
+          channelToDestroy
+        })
+      } catch(error) {
+        console.log(error)
       }
-    } else if (message.content.startsWith('--play')) {
+    } else if(message.content.startsWith('--play')) {
       try {
-        await Commands.playSong(message);
-      } catch (error) {
-        throw error;
+        Commands.playSong({
+          message,
+          channelToDestroy,
+          voiceChannel
+        })
+      } catch(error) {
+        console.log(error)
       }
-    } else if (message.content.startsWith('--define')) {
-      try {
-        await Commands.define(message);
-      } catch (error) {
-        message.reply(error.message);
-      }
-    } else if (message.content.startsWith('--help')) {
-      Commands.help(message);
-    } else if(message.content.startsWith('--skip')) {
-      Commands.skipSong(message)
-    } else if (message.content.startsWith('--pause')) {
-      Commands.pauseSong(message);
-    } else if(message.content.startsWith('--resume')) {
-      Commands.resumeSong(message)
     }
+
+
+    
   }
 });
 

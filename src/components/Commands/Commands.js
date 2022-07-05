@@ -22,7 +22,19 @@ class Commands extends Bot {
     this.currentResult = undefined;
     this.isUserChoosingSong = false;
   }
-  async lofime(voiceChannel) {
+
+  /* 
+  Arrow functions here has a important role. See, since we are passing these
+  methods to the commandsMap object, if the methods of these class are not 
+  in a arrow function, the keyword 'this' will start to refer to that commandsMap object,
+  not this class with properties like its player. 
+  
+  So do not remove the arrow functions
+  and if you do, make sure the reference of 'this' is correct.
+  */
+
+  lofime = async (options) => {
+    const {voiceChannel} = options
     try {
       const lofiResource = Util.sortResources(lofiResources);
       await this.play(lofiResource, voiceChannel);
@@ -30,7 +42,8 @@ class Commands extends Bot {
       return error;
     }
   }
-  async playSong(message) {
+  playSong = async (options) => {
+    const {message} = options
     if (!this.isUserChoosingSong) {
 
       const query = Util.getYoutubeSearchQuery(message);
@@ -86,7 +99,8 @@ class Commands extends Bot {
     }
   }
 
-  async skipSong(message) {
+  skipSong = async (options) => {
+    const {message} = options
     const channel = message.member.voice.channel;
     if(queue.length == 0) {
       return message.reply('No songs on queue.');
@@ -103,22 +117,25 @@ class Commands extends Bot {
 
   }
 
-  pauseSong(message) {
+  pauseSong = (options) => {
+    const {message} = options
+    console.log(this.player.state.status)
     if(this.player.state.status !== 'playing') {
       return message.reply('No song is playing.')
     }
     this.player.pause()
   }
 
-  resumeSong(message) {
-    console.log(this.player.state.status)
+  resumeSong = (options) => {
+    const {message} = options
     if(this.player.state.status !== 'paused') {
       return message.reply('No song is paused.')
     }
     this.player.unpause()
   }
 
-  async define(message) {
+  define = async (options) => {
+    const {message} = options
     const commandToArray = message.content.split(' ');
     commandToArray.shift();
     const word = commandToArray.join(' ');
@@ -132,7 +149,8 @@ class Commands extends Bot {
       throw error;
     }
   }
-  async help(message) {
+  help = async (options) => {
+    const {message} = options
     const helpMessage = Util.buildHelpMessage(commandsList);
     message.reply(helpMessage);
   }
