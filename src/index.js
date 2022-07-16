@@ -5,7 +5,7 @@ import Bot from './components/Bot/Bot.js';
 import Commands from './components/Commands/Commands.js';
 import commandsMap from './components/Commands/commandsMap.js';
 
-const astraBot = new Bot()
+const astraBot = new Bot();
 
 astraBot.client.on('ready', () => {
   console.log('Bot is ready sir.');
@@ -14,33 +14,33 @@ astraBot.client.on('ready', () => {
 astraBot.client.on('messageCreate', async (message) => {
   if (!message.author.bot) {
     const voiceChannel = message.member.voice.channel;
-    const channelToDestroy = message.guild.id
+    const channelToDestroy = message.guild.id;
 
-    if(message.content.startsWith('--') && !message.content.startsWith('--play')) {
+    if (
+      message.content.startsWith('--') &&
+      !message.content.startsWith('--play')
+    ) {
       try {
-        const command = message.content.split(' ')[0]
+        const command = message.content.split(' ')[0];
         await commandsMap[command]({
           message,
           voiceChannel,
-          channelToDestroy
-        })
-      } catch(error) {
-        console.log(error)
+          channelToDestroy,
+        });
+      } catch (error) {
+        console.log(error);
       }
-    } else if(message.content.startsWith('--play')) {
+    } else if (message.content.startsWith('--play')) {
       try {
         Commands.playSong({
           message,
           channelToDestroy,
-          voiceChannel
-        })
-      } catch(error) {
-        console.log(error)
+          voiceChannel,
+        });
+      } catch (error) {
+        console.log(error);
       }
     }
-
-
-    
   }
 });
 

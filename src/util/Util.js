@@ -19,7 +19,9 @@ class Util {
     return result;
   }
   buildChooseMessage(youtubeSearchResult) {
-    const resultParsed = this.mapResultArrayToObjects(youtubeSearchResult.items)
+    const resultParsed = this.mapResultArrayToObjects(
+      youtubeSearchResult.items
+    );
     let message = ``;
 
     for (let [key, value] of Object.entries(resultParsed)) {
@@ -28,24 +30,23 @@ class Util {
 
     return {
       message,
-      resultParsed
+      resultParsed,
     };
   }
   handleUserChoice(choice, message) {
-    const isNumber = Math.abs(choice)
+    const isNumber = Math.abs(choice);
     const isGreaterThan5 = isNumber > 5 ? true : false;
 
-    if(!isNumber || isGreaterThan5) {
+    if (!isNumber || isGreaterThan5) {
       return {
         error: true,
-        message: 'Choice not available. Try again.'
-      }
+        message: 'Choice not available. Try again.',
+      };
     }
 
     return {
-      error: false
-    }
-
+      error: false,
+    };
   }
   buildDefinitionsMessage(definitions) {
     let message = ``;
@@ -84,7 +85,7 @@ class Util {
     commandToArray.shift();
     const query = commandToArray.join(' ');
 
-    return query
+    return query;
   }
 }
 

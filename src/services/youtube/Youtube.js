@@ -16,9 +16,9 @@ class Youtube {
       const q = Util.genQueryParams({ q: query });
       const response = await axios.get(`${baseUrl}${q}`);
       return response.data;
-    } catch(error) {
-      console.log(error)
-      return error
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 }

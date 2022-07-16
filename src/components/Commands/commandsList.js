@@ -3,7 +3,9 @@ const commandsList = [
   '--play <song name>',
   '--define <word>',
   '--help',
-  '--leave'
+  '--leave',
+  '--pause',
+  '--resume'
 ];
 
 export default commandsList;

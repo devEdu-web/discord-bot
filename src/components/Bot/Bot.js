@@ -28,8 +28,8 @@ class Bot {
       this.prepareSong(resource);
       const connection = await this.connectToChannel(voiceChannel);
       await connection.subscribe(this.player);
-    } catch(error) {
-      return error
+    } catch (error) {
+      return error;
     }
   }
 
