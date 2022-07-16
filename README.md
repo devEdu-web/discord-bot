@@ -7,6 +7,10 @@ Simple Discord Bot with general purposes.
   * Play a random lofi from the lofi resources.
 * --play `song_name`
   * Open a choose-menu so the user can play a song. The user just have to type `--plpay <1, 2, 3, 4 or 5>`.
+* --pause
+  * Pause current song playing.
+* --resume
+  * Resume current son paused.
 * --leave
   * The bot leaves the voice channel and stops playing audio.
 * --define `word`
